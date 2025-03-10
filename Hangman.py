@@ -1,9 +1,6 @@
 Word = "Hangman"
-
 strikes = 10
-
 GuessAdd = []
-
 done = False
 
 while not done:
