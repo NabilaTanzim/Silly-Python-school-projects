@@ -12,22 +12,24 @@ z = 0
 
 def explore(call):
     if not call:
-        print("No data available")
+        print("No data available\n")
     else:
         for x, student in call.items():
             print(x)
             for data in student:
                 print( data+ ' : ', student[data])
+                print('\n')
 
 def search():
     name_id = input("Enter a name or ID: ")
     for x, student in students.items():
         if student['name'] != name_id:
-            print("Student not found")
+            print("Student not found\n")
         elif student['name'] == name_id:
             print(x)
             for data in student:
                 print(data + ' : ', student[data])
+                print('\n')
 
 def add():
     x = input("Enter the name of the student: ")
@@ -36,21 +38,37 @@ def add():
     z += 1
     students[f"student{z}"] = {"name" : x,
                                "Roll" : y}
+    print("Information added successfully!!")
 
 def remove():
     name_id = input("Enter a name or ID: ")
     y = None
     for x, student in students.items():
         if student['name'] == name_id:
-            y = x
-    if y: students.pop(y)
+            b = input(f"Are you sure you want to delete the information of {name_id} (y/n): ")
+            if b.lower() == 'n':
+                y = False
+            elif b.lower() == 'y':
+                y = x
+        if y: students.pop(y)
+        print("Information removed successfully!!\n")
+    if not y:
+        print("Student does not exist\n")
 
 def edit():
     name_id = input("Enter a name or ID: ")
     new_roll = int(input("Enter the new roll: "))
     for x, student in students.items():
-        if student['name'] == name_id:
+        if student['name'] != name_id:
+            print("Student not found\n")
+        elif student['name'] == name_id:
            student['Roll'] = new_roll
+
+def filtering():
+    print("This feature is coming soon\n")
+
+def sort():
+    print("This feature is coming soon\n")
 
 print('''
 Welcome to the student directory of Sunnyside High-school
@@ -77,8 +95,12 @@ while True:
         edit()
     elif a == 5:
         remove()
+    elif a == 6:
+        filtering()
+    elif a == 7:
+        sort()
     elif a == 8:
         print("Thank you")
         break
     else:
-        print("Invalid Input")
+        print("Invalid Input\n")
