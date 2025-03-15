@@ -10,26 +10,34 @@
 students = {}
 z = 0
 
-def explore(call):
-    if not call:
+def explore():
+    if not students:
         print("No data available\n")
     else:
-        for x, student in call.items():
+        for x, student in students.items():
             print(x)
             for data in student:
                 print( data+ ' : ', student[data])
-                print('\n')
+            print('\n')
+
 
 def search():
-    name_id = input("Enter a name or ID: ")
-    for x, student in students.items():
-        if student['name'] != name_id:
-            print("Student not found\n")
-        elif student['name'] == name_id:
-            print(x)
-            for data in student:
-                print(data + ' : ', student[data])
+    if not students:
+        print("No data available\n")
+    else:
+        name_id = input("Enter a name or ID: ")
+        data_found = False
+        for x, student in students.items():
+            if student['name'] == name_id:
+                data_found = True
+                print(x)
+                for data in student:
+                    print(data + ' : ', student[data])
                 print('\n')
+
+        if not data_found:
+            print("Student not found.\n")
+
 
 def add():
     x = input("Enter the name of the student: ")
@@ -38,37 +46,63 @@ def add():
     z += 1
     students[f"student{z}"] = {"name" : x,
                                "Roll" : y}
-    print("Information added successfully!!")
+    print("Information added successfully!!\n")
+
 
 def remove():
-    name_id = input("Enter a name or ID: ")
-    y = None
-    for x, student in students.items():
-        if student['name'] == name_id:
-            b = input(f"Are you sure you want to delete the information of {name_id} (y/n): ")
-            if b.lower() == 'n':
-                y = False
-            elif b.lower() == 'y':
-                y = x
-        if y: students.pop(y)
-        print("Information removed successfully!!\n")
-    if not y:
-        print("Student does not exist\n")
+    if not students:
+        print("No data available\n")
+    else:
+        name_id = input("Enter a name or ID: ")
+        to_remove = []
+        data_found = False
+        for x, student in students.items():
+            if student['name'] == name_id:
+                data_found = True
+                b = input(f"Are you sure you want to delete the information of {name_id} (y/n): ")
+                if b.lower() == 'n':
+                    print('\n')
+                    break
+                elif b.lower() == 'y':
+                    to_remove.append(name_id)
+
+        for y in to_remove:
+            del students[y]
+            print("Information removed successfully!!")
+
+        if not data_found:
+            print("Student not found.\n")
+
 
 def edit():
-    name_id = input("Enter a name or ID: ")
-    new_roll = int(input("Enter the new roll: "))
-    for x, student in students.items():
-        if student['name'] != name_id:
-            print("Student not found\n")
-        elif student['name'] == name_id:
-           student['Roll'] = new_roll
+    if not students:
+        print("No data available\n")
+    else:
+        name_id = input("Enter a name or ID: ")
+        new_roll = int(input("Enter the new roll: "))
+        data_found = False
+
+        for x, student in students.items():
+            if student['name'] == name_id:
+                data_found = True
+                b = input(f"Are you sure you want to update the information of {name_id} (y/n): ")
+                if b.lower() == 'n':
+                    print('\n')
+                    break
+                elif b.lower() == 'y':
+                    student['Roll'] = new_roll
+                    print("Data updated successfully")
+        if not data_found:
+            print("Student not found.\n")
+
 
 def filtering():
     print("This feature is coming soon\n")
 
+
 def sort():
     print("This feature is coming soon\n")
+
 
 print('''
 Welcome to the student directory of Sunnyside High-school
@@ -83,24 +117,34 @@ Enter 7 to sort
 Enter 8 to exit
 ''')
 
-while True:
-    a = int(input("Enter your choice: "))
-    if a == 1:
-        explore(students)
-    elif a == 2:
-        search()
-    elif a == 3:
-        add()
-    elif a == 4:
-        edit()
-    elif a == 5:
-        remove()
-    elif a == 6:
-        filtering()
-    elif a == 7:
-        sort()
-    elif a == 8:
-        print("Thank you")
-        break
-    else:
-        print("Invalid Input\n")
+try:
+    while True:
+        a = int(input("Enter your choice: "))
+        if a == 1:
+            explore()
+        elif a == 2:
+            search()
+        elif a == 3:
+            add()
+        elif a == 4:
+            edit()
+        elif a == 5:
+            remove()
+        elif a == 6:
+            filtering()
+        elif a == 7:
+            sort()
+        elif a == 8:
+            print("Thank you")
+            break
+        else:
+            print("Invalid Input\n")
+
+except ValueError:
+    print("Invalid Input")
+
+# problems faced:
+# 1. Does not take inputs after except condition
+# 2. detects spaces as value error
+# 3. does not take id yet
+# 4. ID does not necessarily have to be in integer. str should be fine
